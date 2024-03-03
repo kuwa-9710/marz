@@ -1,0 +1,20 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql:/var/lib/mysql
+
+  web:
+    build: .
+    command: bash -c "rm -f ./tmp/pids/server.pid && bundle exec rails s -p 4000 -b '0.0.0.0'"
+    depends_on:
+      - db
+    ports:
+      - '4000:4000'
+    volumes:
+      - .:/marz
+
+volumes:
+  mysql:
